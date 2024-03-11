@@ -19,5 +19,11 @@ namespace QrMenu.Data
         public DbSet<QrMenu.Models.Category>? Categories { get; set; }
         public DbSet<QrMenu.Models.Food>? Foods { get; set; }
         public DbSet<QrMenu.Models.User>? Users { get; set; }
+        public DbSet<QrMenu.Models.RestaurantUser>? RestaurantUsers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RestaurantUser>().HasKey(ru => new { ru.RestaurantId, ru.UserId });
+        }
     }
 }
