@@ -20,5 +20,7 @@ namespace QrMenu.Models
         public int CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public Category? Category { get; set; }
+        [NotMapped]
+        public IFormFile? Picture { get; set; }
     }
 }

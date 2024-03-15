@@ -14,10 +14,12 @@ namespace QrMenu.Controllers
     public class FoodsController : Controller
     {
         private readonly QrMenuContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public FoodsController(QrMenuContext context)
+        public FoodsController(QrMenuContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Foods
@@ -68,12 +70,17 @@ namespace QrMenu.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description,StateId,CategoryId")] Food food)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description,StateId,CategoryId")] Food food, IFormFile picture)
         {
+            FileStream fileStream;
             if (ModelState.IsValid)
             {
                 _context.Add(food);
                 await _context.SaveChangesAsync();
+                fileStream = new FileStream(_webHostEnvironment.WebRootPath + "/images/food/" + food.Id.ToString() + ".jpg", FileMode.Create);
+                picture.CopyTo(fileStream);
+                fileStream.Close();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", food.CategoryId);

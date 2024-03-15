@@ -28,6 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
+            <th>
+                Picture
+            </th>
             @if (userId != null)
             {
                 <th>
@@ -41,6 +44,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+        string imagePath = @item.Id.ToString() + ".jpg";
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -53,7 +57,10 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Id)
-             </td>
+            </td>
+            <td>
+                <img src=@imagePath alt="FoodImage">
+            </td>
             @if (userId != null)
             {
                 <td>
